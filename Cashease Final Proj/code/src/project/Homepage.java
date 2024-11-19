@@ -1,17 +1,9 @@
 package project;
 
-import java.awt.EventQueue;
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.util.HashMap;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 public class Homepage extends JFrame {
 
@@ -24,9 +16,6 @@ public class Homepage extends JFrame {
     private String userName; // Variable to hold the user's name
     private StringBuilder transactionLog; // To record transaction history
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
@@ -38,9 +27,6 @@ public class Homepage extends JFrame {
         });
     }
 
-    /**
-     * Create the frame with a username.
-     */
     public Homepage(String userName) {
         this.userName = userName; // Assign the passed username
         transactionLog = new StringBuilder(); // Initialize transaction log
@@ -54,7 +40,7 @@ public class Homepage extends JFrame {
         setBounds(100, 100, 800, 500);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(240, 248, 255)); // Light background color
-        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
@@ -116,6 +102,16 @@ public class Homepage extends JFrame {
         btnTransaction.setToolTipText("Click to view transaction history");
         btnTransaction.addActionListener(e -> openTransactionFrame());
         contentPane.add(btnTransaction);
+
+        // Logout button
+        JButton btnLogout = new JButton("Logout");
+        btnLogout.setFont(new Font("Arial", Font.PLAIN, 18));
+        btnLogout.setBackground(new Color(70, 130, 180)); // Steel blue background
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setBounds(50, 400, 150, 50);
+        btnLogout.setToolTipText("Click to logout and return to the login screen");
+        btnLogout.addActionListener(e -> logout());
+        contentPane.add(btnLogout);
     }
 
     private void openTransactionFrame() {
@@ -156,5 +152,11 @@ public class Homepage extends JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid amount entered.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    private void logout() {
+        dispose(); // Close the Homepage window
+        Login loginScreen = new Login(); // Open a new Login screen
+        loginScreen.setVisible(true);
     }
 }
