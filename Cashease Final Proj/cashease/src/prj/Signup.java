@@ -1,4 +1,4 @@
-package project;
+package prj;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,45 +168,25 @@ public class Signup extends JFrame {
         String email = emailField.getText().trim();
         String contact = contactField.getText().trim();
 
-        // Basic validation for empty fields
+        // Validate fields as before...
         if (username.isEmpty() || password.isEmpty() || email.isEmpty() || contact.isEmpty()) {
             JOptionPane.showMessageDialog(contentPane, "All fields must be filled out.", "Signup Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Username validation
-        if (username.length() < 3) {
-            JOptionPane.showMessageDialog(contentPane, "Username must be at least 3 characters long.", "Signup Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Password validation
-        if (password.length() < 6) {
-            JOptionPane.showMessageDialog(contentPane, "Password must be at least 6 characters long.", "Signup Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Email validation
-        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            JOptionPane.showMessageDialog(contentPane, "Please enter a valid email address.", "Signup Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Contact number validation
-        if (!contact.matches("^\\d{10,15}$")) {
-            JOptionPane.showMessageDialog(contentPane, "Contact number must be between 10 and 15 digits.", "Signup Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // Generate a unique account number (example logic: using current timestamp)
+        String accountNumber = "ACC" + System.currentTimeMillis();
 
         try {
-            String query = "INSERT INTO accountdetails (accUsername, accPassword, accEmail, accContact) VALUES ('"
+            String query = "INSERT INTO accountdetails (accUsername, accPassword, accEmail, accContact, accNumber) VALUES ('"
                     + username + "', '"
                     + password + "', '"
                     + email + "', '"
-                    + contact + "')";
+                    + contact + "', '"
+                    + accountNumber + "')";
             st.executeUpdate(query);
 
-            JOptionPane.showMessageDialog(this, "Account created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Account created successfully! Your account number is: " + accountNumber, "Success", JOptionPane.INFORMATION_MESSAGE);
 
             // Redirect to the Login page
             Login loginFrame = new Login();
@@ -217,4 +197,5 @@ public class Signup extends JFrame {
             ex.printStackTrace();
         }
     }
+
 }

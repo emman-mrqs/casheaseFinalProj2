@@ -1,25 +1,36 @@
 package project;
 
-import java.awt.*;
+import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
 import java.math.BigDecimal;
 import java.util.HashMap;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class Homepage extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JLabel lblCurrentBalance; // Label to show current balance
-    private JLabel lblWelcomeUser; // Label to show welcome message
-    private HashMap<String, BigDecimal> accounts; // HashMap to store account balances
-    private String accountNumber = "12345"; // Placeholder for account number
-    private String userName; // Variable to hold the user's name
-    private StringBuilder transactionLog; // To record transaction history
+    private JLabel lblCurrentBalance;
+    private JLabel lblWelcomeUser;
+    private HashMap<String, BigDecimal> accounts;
+    private String accountNumber = "12345";
+    private String userName;
+    private StringBuilder transactionLog;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                Homepage frame = new Homepage("DefaultUser"); // Call with a default username
+                Homepage frame = new Homepage("DefaultUser");
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -28,26 +39,24 @@ public class Homepage extends JFrame {
     }
 
     public Homepage(String userName) {
-        this.userName = userName; // Assign the passed username
-        transactionLog = new StringBuilder(); // Initialize transaction log
+        this.userName = userName;
+        transactionLog = new StringBuilder();
 
-        // Initialize account and set initial balance
         accounts = new HashMap<>();
-        accounts.put(accountNumber, new BigDecimal("1000.00")); // Start with 1000 balance
+        accounts.put(accountNumber, new BigDecimal("1000.00"));
 
         setTitle("Banking App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 500);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(240, 248, 255)); // Light background color
-        contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        contentPane.setBackground(new Color(240, 248, 255));
+        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        // Welcome panel
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(100, 149, 237)); // Cornflower blue
         panel.setBounds(0, 0, 784, 70);
+        panel.setBackground(new Color(100, 149, 237));
         contentPane.add(panel);
         panel.setLayout(null);
 
@@ -58,58 +67,46 @@ public class Homepage extends JFrame {
         lblWelcomeUser.setBounds(10, 10, 764, 50);
         panel.add(lblWelcomeUser);
 
-        // Current balance label
         JLabel lblBalanceText = new JLabel("Current Balance:");
-        lblBalanceText.setFont(new Font("Arial", Font.BOLD, 20));
         lblBalanceText.setBounds(50, 100, 200, 30);
+        lblBalanceText.setFont(new Font("Arial", Font.BOLD, 20));
         contentPane.add(lblBalanceText);
 
         lblCurrentBalance = new JLabel("₱" + accounts.get(accountNumber).toString());
-        lblCurrentBalance.setFont(new Font("Arial", Font.BOLD, 28));
-        lblCurrentBalance.setForeground(new Color(34, 139, 34)); // Green for positive balance
         lblCurrentBalance.setBounds(50, 140, 300, 40);
+        lblCurrentBalance.setFont(new Font("Arial", Font.BOLD, 28));
+        lblCurrentBalance.setForeground(new Color(34, 139, 34));
         contentPane.add(lblCurrentBalance);
 
-        // Deposit button
         JButton btnDeposit = new JButton("Deposit");
-        btnDeposit.setFont(new Font("Arial", Font.PLAIN, 18));
-        btnDeposit.setBackground(new Color(50, 205, 50)); // Green background
-        btnDeposit.setForeground(Color.WHITE);
         btnDeposit.setBounds(450, 120, 250, 60);
-        btnDeposit.setFocusPainted(false);
-        btnDeposit.setToolTipText("Click to deposit money to your account");
+        btnDeposit.setFont(new Font("Arial", Font.PLAIN, 18));
+        btnDeposit.setBackground(new Color(50, 205, 50));
+        btnDeposit.setForeground(Color.WHITE);
         btnDeposit.addActionListener(e -> depositMoney());
         contentPane.add(btnDeposit);
 
-        // Withdraw button
         JButton btnWithdraw = new JButton("Withdraw");
-        btnWithdraw.setFont(new Font("Arial", Font.PLAIN, 18));
-        btnWithdraw.setBackground(new Color(220, 20, 60)); // Crimson background
-        btnWithdraw.setForeground(Color.WHITE);
         btnWithdraw.setBounds(450, 220, 250, 60);
-        btnWithdraw.setFocusPainted(false);
-        btnWithdraw.setToolTipText("Click to withdraw money from your account");
+        btnWithdraw.setFont(new Font("Arial", Font.PLAIN, 18));
+        btnWithdraw.setBackground(new Color(220, 20, 60));
+        btnWithdraw.setForeground(Color.WHITE);
         btnWithdraw.addActionListener(e -> withdrawMoney());
         contentPane.add(btnWithdraw);
 
-        // Transaction button
         JButton btnTransaction = new JButton("Transaction");
-        btnTransaction.setFont(new Font("Arial", Font.PLAIN, 18));
-        btnTransaction.setBackground(new Color(255, 165, 0)); // Orange background
-        btnTransaction.setForeground(Color.WHITE);
         btnTransaction.setBounds(450, 320, 250, 60);
-        btnTransaction.setFocusPainted(false);
-        btnTransaction.setToolTipText("Click to view transaction history");
+        btnTransaction.setFont(new Font("Arial", Font.PLAIN, 18));
+        btnTransaction.setBackground(new Color(255, 165, 0));
+        btnTransaction.setForeground(Color.WHITE);
         btnTransaction.addActionListener(e -> openTransactionFrame());
         contentPane.add(btnTransaction);
 
-        // Logout button
         JButton btnLogout = new JButton("Logout");
+        btnLogout.setBounds(50, 356, 250, 60);
         btnLogout.setFont(new Font("Arial", Font.PLAIN, 18));
-        btnLogout.setBackground(new Color(70, 130, 180)); // Steel blue background
+        btnLogout.setBackground(new Color(255, 0, 0));
         btnLogout.setForeground(Color.WHITE);
-        btnLogout.setBounds(50, 400, 150, 50);
-        btnLogout.setToolTipText("Click to logout and return to the login screen");
         btnLogout.addActionListener(e -> logout());
         contentPane.add(btnLogout);
     }
@@ -155,8 +152,11 @@ public class Homepage extends JFrame {
     }
 
     private void logout() {
-        dispose(); // Close the Homepage window
-        Login loginScreen = new Login(); // Open a new Login screen
-        loginScreen.setVisible(true);
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            this.dispose(); // Close the current frame
+            Login loginWindow = new Login(); // Open the login window
+            loginWindow.setVisible(true);
+        }
     }
 }
